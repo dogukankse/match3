@@ -16,9 +16,9 @@ namespace Models
         public Constants.TileType TileType => _tileType;
 
         [SerializeField] private Constants.TileType _tileType;
-        [SerializeField] private Sprite _default;
         [SerializeField] private Sprite _a;
         [SerializeField] private Sprite _b;
         [SerializeField] private Sprite _c;
+        [SerializeField] private Sprite _default;
     }
 }

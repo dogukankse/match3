@@ -9,11 +9,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c8e2bc08307d4a5a8793b2ff32724f51, type: 3}
+  m_Script: {fileID: 11500000, guid: 35cfeb392c40b4042980aa4246f28f52, type: 3}
   m_Name: Purple
   m_EditorClassIdentifier: 
-  _tileType: 5
-  _default: {fileID: 21300000, guid: 2af29230774f8604c93d1d238956b0a1, type: 3}
-  _a: {fileID: 21300000, guid: 1a7394e15c9a17a4dba3e95685538f8d, type: 3}
-  _b: {fileID: 21300000, guid: 033498416df2fa442bb17380b65e1e5e, type: 3}
-  _c: {fileID: 21300000, guid: 93426ff31da6a13498240a8106bd8ab0, type: 3}
+  _tileType: 4
+  _a: {fileID: 21300000, guid: de34abe5956f34bc88b3634cfb0dc0cf, type: 3}
+  _b: {fileID: 21300000, guid: b6ca71f2d258e4428b801e2a02c6f086, type: 3}
+  _c: {fileID: 21300000, guid: 8a4acfe23ce5246cbbe2e0db3aa6fda8, type: 3}
+  _default: {fileID: 21300000, guid: 91cf9ea72fd4d461b989cbe94e4dbdf4, type: 3}

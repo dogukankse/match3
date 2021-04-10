@@ -9,11 +9,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c8e2bc08307d4a5a8793b2ff32724f51, type: 3}
+  m_Script: {fileID: 11500000, guid: 35cfeb392c40b4042980aa4246f28f52, type: 3}
   m_Name: Pink
   m_EditorClassIdentifier: 
-  _tileType: 4
-  _default: {fileID: 21300000, guid: a739f8bc9c7f31c429d93567e06e8452, type: 3}
-  _a: {fileID: 21300000, guid: 4b88612c171a9fc499ae8b9a1f28e111, type: 3}
-  _b: {fileID: 21300000, guid: f2d2a17dd6d9ccc48a50d6ea51336456, type: 3}
-  _c: {fileID: 21300000, guid: e7477bd78ba6618499cb0e3dfda05ca3, type: 3}
+  _tileType: 3
+  _a: {fileID: 21300000, guid: f6ef57909d3474d82871418e0cef3d39, type: 3}
+  _b: {fileID: 21300000, guid: aeb3330e3b0dc4698852b1282137f8b5, type: 3}
+  _c: {fileID: 21300000, guid: 2fa97d7f094d3421e83f78f9e13aee99, type: 3}
+  _default: {fileID: 21300000, guid: d0c04d51dadf340f79d7b163c9733b31, type: 3}
