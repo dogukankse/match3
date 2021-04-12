@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using Object = UnityEngine.Object;
 
@@ -9,13 +10,15 @@ namespace Base
 	{
 		public static readonly Dictionary<string, ObjectPool> Pools = new Dictionary<string, ObjectPool>();
 
-		public int Count => _pool.Count;
+		public int Count => _passivePool.Count;
 
-		private readonly Queue<GameObject> _pool;
+		private readonly List<GameObject> _passivePool;
+		private readonly List<GameObject> _activePool;
 
 		private ObjectPool()
 		{
-			_pool = new Queue<GameObject>();
+			_passivePool = new List<GameObject>();
+			_activePool = new List<GameObject>();
 		}
 
 		public static ObjectPool CreatePool(string name, int size, GameObject baseObject, Transform parent = null)
@@ -26,30 +29,54 @@ namespace Base
 			{
 				var go = parent != null ? Object.Instantiate(baseObject, parent) : Object.Instantiate(baseObject);
 
-
-				go.SetActive(false);
 				go.name = name + i;
-				Pools[name]._pool.Enqueue(go);
+				Pools[name]._passivePool.Add(go);
 			}
 
 			return Pools[name];
 		}
 
-		public GameObject GetPoolObject()
+		/// <summary>
+		/// 
+		/// </summary>
+		/// <returns>Active game object</returns>
+		public GameObject Pop()
 		{
-			GameObject go = _pool.Dequeue();
+			int lastIndex = _passivePool.Count - 1;
+			GameObject go = _passivePool[lastIndex];
 			go.SetActive(true);
 
-			_pool.Enqueue(go);
+			_activePool.Add(go);
+			_passivePool.RemoveAt(lastIndex);
 
 			return go;
+		}
+
+		/// <summary>
+		/// Add passive game object. If object not passive throws error
+		/// </summary>
+		public void Push(GameObject go)
+		{
+			if (go.activeSelf) throw new Exception("GameObject is active");
+			for (int i = 0; i < _activePool.Count; i++)
+			{
+				if (_activePool[i].GetInstanceID() == go.GetInstanceID())
+					_activePool.RemoveAt(i);
+			}
+
+			_passivePool.Add(go);
 		}
 
 		public void Dispose()
 		{
 			foreach (var objectPool in Pools)
 			{
-				foreach (var obj in objectPool.Value._pool)
+				foreach (var obj in objectPool.Value._passivePool)
+				{
+					Object.Destroy(obj);
+				}
+
+				foreach (var obj in objectPool.Value._activePool)
 				{
 					Object.Destroy(obj);
 				}

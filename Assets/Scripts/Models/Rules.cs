@@ -1,3 +1,5 @@
+using UnityEngine;
+
 namespace Models
 {
 	public static class Rules
@@ -8,5 +10,6 @@ namespace Models
 		public static MinMax<int> aMinMax;
 		public static MinMax<int> bMinMax;
 		public static MinMax<int> cMinMax;
+		public static Vector2Int sizeMax;
 	}
 }

@@ -1,15 +1,9 @@
-﻿using System.Data;
-using DG.Tweening;
-using Models;
+﻿using Models;
 using UnityEngine;
-using Utils;
 
 public class GameManager : MonoBehaviour
 {
 	[SerializeField] private TouchController _touchController;
-
-	[SerializeField] private SpriteRenderer _bgPrefab;
-	[SerializeField] private Tile _tilePrefab;
 
 	[Header("Game Rules")] [SerializeField]
 	private int _minBlastGroupCount = 2;
@@ -26,19 +20,20 @@ public class GameManager : MonoBehaviour
 	[SerializeField] private MinMax<int> _columnsBounds;
 
 	private GameBoard _gameBoard;
-	private Bounds _cameraBounds;
 
 	private void Start()
 	{
-
-		_cameraBounds = Camera.main.OrthographicBounds();
-		
-		SetRules();
 		int rows = Random.Range(_rowsBounds.MIN, _rowsBounds.MAX + 1);
 		int columns = Random.Range(_columnsBounds.MIN, _columnsBounds.MAX + 1);
+		SetRules();
+
 		_gameBoard = new GameBoard(rows, columns);
-		_gameBoard.CreateBoard(_bgPrefab, _tilePrefab);
+
 		_touchController.OnClick = _gameBoard.Blast;
+		_gameBoard.AllowUserInput = _touchController.AllowUserInput;
+		_gameBoard.BlockUserInput = _touchController.BlockUserInput;
+
+		_gameBoard.CreateBoard();
 	}
 
 	private void SetRules()
@@ -49,5 +44,6 @@ public class GameManager : MonoBehaviour
 		Rules.aMinMax = _groupA;
 		Rules.bMinMax = _groupB;
 		Rules.cMinMax = _groupC;
+		Rules.sizeMax = new Vector2Int(_columnsBounds.MAX, _rowsBounds.MAX);
 	}
 }

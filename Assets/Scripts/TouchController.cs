@@ -1,14 +1,25 @@
-﻿using System;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.Events;
-using Utils;
 
 public class TouchController : MonoBehaviour
 {
 	public UnityAction<Tile> OnClick;
 
+	private bool _block;
+
+	public void AllowUserInput()
+	{
+		_block = false;
+	}
+
+	public void BlockUserInput()
+	{
+		_block = true;
+	}
+
 	private void Update()
 	{
+		if (_block) return;
 		#if UNITY_EDITOR || UNITY_EDITOR_OSX
 		if (Input.GetMouseButtonDown(0))
 		{
@@ -16,6 +27,7 @@ public class TouchController : MonoBehaviour
 			RaycastHit2D hit = Physics2D.Raycast(clickPos, Vector2.zero);
 			if (hit && hit.transform.TryGetComponent(out Tile tile))
 			{
+				_block = true;
 				OnClick(tile);
 			}
 		}
@@ -29,6 +41,7 @@ public class TouchController : MonoBehaviour
 				RaycastHit2D hit = Physics2D.Raycast(touchPos, Vector2.zero);
 				if (hit && hit.transform.TryGetComponent(out Tile tile))
 				{
+					_block = true;
 					OnClick(tile);
 				}
 			}
