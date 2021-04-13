@@ -45,7 +45,6 @@ public class GameBoard
 		_view.CalculateBoardSize();
 		_view.CreateBoard();
 
-
 		for (int y = 0; y < _rows; y++)
 		{
 			for (int x = 0; x < _columns; x++)
@@ -63,7 +62,25 @@ public class GameBoard
 
 		MatchTiles();
 	}
+	
+	//if tile has more than "minBlastCount" tile neighbor blast them
+	public void Blast(Tile tile)
+	{
+		if (tile.Flood.Count >= Rules.minBlastCount)
+		{
+			_view.BlastAnim(tile, true);
+		}
+		else if (tile.Parent && tile.Parent.Flood.Count >= Rules.minBlastCount)
+		{
+			_view.BlastAnim(tile);
+		}
+		else
+		{
+			AllowUserInput();
+		}
+	}
 
+	//perform flood fill for all suitable tiles
 	private void MatchTiles()
 	{
 		for (int y = 0; y < _rows; y++)
@@ -78,7 +95,7 @@ public class GameBoard
 		UpdateTileState();
 	}
 
-
+	
 	private void UpdateTileState()
 	{
 		_hasMove = false;
@@ -89,11 +106,13 @@ public class GameBoard
 			{
 				Tile parent = _tiles[x, y];
 				int count = parent.Flood.Count;
+				//current board have move(blast)
 				if (count >= Rules.minBlastCount)
 				{
 					_hasMove = true;
 				}
 
+				
 				if (_matchCountsByTypes.ContainsKey(parent.TileType)) _matchCountsByTypes[parent.TileType] += 1;
 				else _matchCountsByTypes[parent.TileType] = 1;
 
@@ -117,6 +136,7 @@ public class GameBoard
 
 		_hasMatch = false;
 
+		//Check if the board has a "minBlastCount" pair if not no more move, end game
 		foreach (var count in _matchCountsByTypes.Values)
 		{
 			if (count >= Rules.minBlastCount)
@@ -125,29 +145,9 @@ public class GameBoard
 			}
 		}
 
+		//current board has "minBlastCount" but not in this sequence
 		if (!_hasMove)
 			Shuffle();
-		
-	}
-
-
-	public void Blast(Tile tile)
-	{
-		Debug.Log("block");
-		if (tile.Flood.Count >= Rules.minBlastCount)
-		{
-			_view.Blast(tile, true);
-		}
-		else if (tile.Parent && tile.Parent.Flood.Count >= Rules.minBlastCount)
-		{
-			_view.Blast(tile);
-		}
-		else
-		{
-			AllowUserInput();
-			Debug.Log("Allow");
-
-		}
 	}
 
 	private void FloodFill(int x, int y, Tile tile)
@@ -170,6 +170,7 @@ public class GameBoard
 		return x >= 0 && y >= 0 && x < _columns && y < _rows;
 	}
 
+	//count each tiles fall count
 	private void FallTiles()
 	{
 		int fallCount = 0;
@@ -184,7 +185,6 @@ public class GameBoard
 				}
 				else if (fallCount > 0)
 				{
-					//_view.TileFall(tile, fallCount);
 					_view.AddTileToFall(tile);
 					_tiles[x, y] = null;
 					tile.UpdatePos(tile.Pos.x, tile.Pos.y - fallCount);
@@ -195,9 +195,10 @@ public class GameBoard
 			fallCount = 0;
 		}
 
-		_view.FallTiles();
+		_view.FallAnim();
 	}
 
+	//clear tile state
 	private void ClearTiles()
 	{
 		for (int y = 0; y < _rows; y++)
@@ -209,6 +210,7 @@ public class GameBoard
 		}
 	}
 
+	//create tiles for empty spaces
 	private void Refill()
 	{
 		for (int y = 0; y < _rows; y++)
@@ -241,7 +243,7 @@ public class GameBoard
 			}
 		}
 
-		_view.ShuffleTiles(_tiles);
+		_view.ShuffleAnim(_tiles);
 	}
 
 	#region Events
@@ -273,12 +275,11 @@ public class GameBoard
 		if (_hasMove)
 		{
 			AllowUserInput();
-			Debug.Log("Allow");
 		}
-		if (!_hasMatch)
+
+		if (!_hasMatch) //no more match. end game
 		{
 			CanvasView.Instance.ShowAlert("No more match");
-			CanvasView.Instance.CreateButton("Try Again", OnButtonClicked);
 			Time.timeScale = 0;
 		}
 	}

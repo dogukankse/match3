@@ -50,15 +50,7 @@ namespace View
 			CreateGameObjects();
 		}
 
-		private void CreateGameObjects()
-		{
-			_boardGo = new GameObject("Board");
-			_backgroundGo = new GameObject("Background");
-			_tilesGo = new GameObject("Tiles");
-			_backgroundGo.transform.parent = _boardGo.transform;
-			_tilesGo.transform.parent = _boardGo.transform;
-		}
-
+		//calculate board size by rows-columns
 		public void CalculateBoardSize()
 		{
 			if (_columns >= 5)
@@ -94,15 +86,14 @@ namespace View
 			_backgroundTiles[x, y] = go;
 		}
 
-
+		//move board to centre
 		public void AdjustView()
 		{
-			//move to centre
-			//Vector2 lastPos = new Vector2(_columns - 1, _rows - 1);
 			Vector2 lastPos = _backgroundTiles[_columns - 1, _rows - 1].transform.position;
 			_boardGo.transform.position = new Vector2(lastPos.x / -2f, lastPos.y / -2f);
 		}
 
+		//tile creation animation
 		public void CreateTileAnim(float delay = 0)
 		{
 			Sequence seq = DOTween.Sequence();
@@ -116,7 +107,9 @@ namespace View
 			seq.OnComplete(() => OnCreateTileCompleted());
 		}
 
-
+		/// <summary>
+		/// Get available tile from pool and return
+		/// </summary>
 		public Tile CreateTile()
 		{
 			Tile tile = _tilePool.Pop().GetComponent<Tile>();
@@ -125,7 +118,7 @@ namespace View
 			return tile;
 		}
 
-		public void Blast(Tile tile, bool isParent = false)
+		public void BlastAnim(Tile tile, bool isParent = false)
 		{
 			Sequence seq = DOTween.Sequence();
 
@@ -163,7 +156,7 @@ namespace View
 			seq.OnComplete(() => OnBlastCompleted?.Invoke());
 		}
 
-		public void FallTiles()
+		public void FallAnim()
 		{
 			Sequence seq = DOTween.Sequence();
 			foreach (var fallTile in _tilesToFall)
@@ -177,7 +170,7 @@ namespace View
 			seq.OnComplete(() => OnTileFallCompleted?.Invoke());
 		}
 
-		public void ShuffleTiles(Tile[,] tiles)
+		public void ShuffleAnim(Tile[,] tiles)
 		{
 			Sequence seq = DOTween.Sequence();
 			for (int y = 0; y < _rows; y++)
@@ -193,10 +186,19 @@ namespace View
 			seq.OnComplete(() => OnShuffleTilesCompleted?.Invoke());
 		}
 
-
+		//register tiles to fall anim
 		public void AddTileToFall(Tile tile)
 		{
 			_tilesToFall.Add(tile);
+		}
+		
+		private void CreateGameObjects()
+		{
+			_boardGo = new GameObject("Board");
+			_backgroundGo = new GameObject("Background");
+			_tilesGo = new GameObject("Tiles");
+			_backgroundGo.transform.parent = _boardGo.transform;
+			_tilesGo.transform.parent = _boardGo.transform;
 		}
 	}
 }

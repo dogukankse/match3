@@ -18,7 +18,6 @@ namespace Utils
 
         public static T GetRandom<T>(this IList<T> collection)
         {
-            
             int index = Random.Range(0, collection.Count);
             return collection[index];
         }

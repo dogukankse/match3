@@ -1,21 +1,12 @@
 using UnityEngine;
-using UnityEngine.Events;
 using UnityEngine.UI;
 
 namespace View
 {
 	public class CanvasView
 	{
-		public static CanvasView Instance
-		{
-			get
-			{
-				if (_instance == null)
-					_instance = new CanvasView();
-				return _instance;
-			}
-		}
-		
+		public static CanvasView Instance => _instance ??= new CanvasView();
+
 		private static CanvasView _instance;
 
 		private static Canvas _canvas;
@@ -24,8 +15,6 @@ namespace View
 		{
 			_canvas = GameObject.FindWithTag("UI").GetComponent<Canvas>();
 		}
-		
-		
 		
 		public void ShowAlert(string msg)
 		{
@@ -45,10 +34,5 @@ namespace View
 			t.resizeTextForBestFit = true;
 		}
 
-
-		public void CreateButton(string tryAgain, UnityAction onButtonClicked)
-		{
-			
-		}
 	}
 }

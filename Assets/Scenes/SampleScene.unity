@@ -296,11 +296,11 @@ MonoBehaviour:
     _min: 1
     _max: 6
   _rowsBounds:
-    _min: 4
-    _max: 4
+    _min: 5
+    _max: 10
   _columnsBounds:
-    _min: 4
-    _max: 4
+    _min: 5
+    _max: 10
 --- !u!4 &1295022016
 Transform:
   m_ObjectHideFlags: 0

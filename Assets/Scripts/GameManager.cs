@@ -5,8 +5,8 @@ public class GameManager : MonoBehaviour
 {
 	[SerializeField] private TouchController _touchController;
 
-	[Header("Game Rules")] [SerializeField]
-	private int _minBlastGroupCount = 2;
+	[Header("Game Rules")] 
+	[SerializeField] private int _minBlastGroupCount = 2;
 
 	[SerializeField] private MinMax<int> _groupDefault;
 	[SerializeField] private MinMax<int> _groupA;
